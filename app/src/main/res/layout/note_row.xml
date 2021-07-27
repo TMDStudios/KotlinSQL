@@ -4,11 +4,11 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:padding="8dp"
-    android:id="@+id/llItemHolder"
+    android:id="@+id/llNoteHolder"
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/tvItem"
+        android:id="@+id/tvNote"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textAlignment="center"
@@ -18,13 +18,13 @@
         android:text="TextView" />
 
     <ImageButton
-        android:id="@+id/ibEditItem"
+        android:id="@+id/ibEditNote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/edit_icon" />
 
     <ImageButton
-        android:id="@+id/ibDeleteItem"
+        android:id="@+id/ibDeleteNote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/delete_icon" />
