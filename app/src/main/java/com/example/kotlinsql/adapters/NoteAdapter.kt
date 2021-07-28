@@ -40,7 +40,8 @@ class NoteAdapter(
             }
             ibDeleteNote.setOnClickListener {
                 if(context is MainActivity){
-                    (context as MainActivity).deleteNote(item.id)
+                    (context as MainActivity).viewModel.deleteNote(item.id)
+                    (context as MainActivity).updateRV()
                 }
             }
         }

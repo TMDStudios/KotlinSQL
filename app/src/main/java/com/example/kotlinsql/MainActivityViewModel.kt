@@ -6,7 +6,19 @@ import com.example.kotlinsql.database.NoteModel
 
 class MainActivityViewModel(private val db: DatabaseHandler): ViewModel() {
 
-    fun getItemsList(): ArrayList<NoteModel>{
+    fun getNotesList(): ArrayList<NoteModel>{
         return db.viewNotes()
+    }
+
+    fun postNote(noteText: String){
+        db.addNote(NoteModel(0, noteText))
+    }
+
+    fun editNote(noteID: Int, noteText: String){
+        db.updateNote(NoteModel(noteID, noteText))
+    }
+
+    fun deleteNote(noteID: Int){
+        db.deleteNote(NoteModel(noteID, ""))
     }
 }

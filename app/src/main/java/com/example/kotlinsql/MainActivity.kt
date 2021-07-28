@@ -11,11 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlinsql.adapters.NoteAdapter
 import com.example.kotlinsql.database.DatabaseHandler
-import com.example.kotlinsql.database.NoteModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var db: DatabaseHandler
-    private lateinit var viewModel: MainActivityViewModel
+    lateinit var viewModel: MainActivityViewModel
 
     private lateinit var rvNotes: RecyclerView
     private lateinit var editText: EditText
@@ -31,31 +30,19 @@ class MainActivity : AppCompatActivity() {
 
         editText = findViewById(R.id.tvNewNote)
         submitBtn = findViewById(R.id.btSubmit)
-        submitBtn.setOnClickListener { postNote() }
+        submitBtn.setOnClickListener {
+            viewModel.postNote(editText.text.toString())
+            editText.text.clear()
+            updateRV()
+        }
 
         rvNotes = findViewById(R.id.rvNotes)
         updateRV()
     }
 
-    private fun updateRV(){
-        rvNotes.adapter = NoteAdapter(this, viewModel.getItemsList())
+    fun updateRV(){
+        rvNotes.adapter = NoteAdapter(this, viewModel.getNotesList())
         rvNotes.layoutManager = LinearLayoutManager(this)
-    }
-
-    private fun postNote(){
-        db.addNote(NoteModel(0, editText.text.toString()))
-        editText.text.clear()
-        updateRV()
-    }
-
-    fun editNote(noteID: Int, noteText: String){
-        db.updateNote(NoteModel(noteID, noteText))
-        updateRV()
-    }
-
-    fun deleteNote(noteID: Int){
-        db.deleteNote(NoteModel(noteID, ""))
-        updateRV()
     }
 
     fun raiseDialog(id: Int){
@@ -65,7 +52,11 @@ class MainActivity : AppCompatActivity() {
         dialogBuilder
             .setCancelable(false)
             .setPositiveButton("Save", DialogInterface.OnClickListener {
-                    _, _ -> editNote(id, updatedNote.text.toString())
+                    _, _ ->
+                run {
+                    viewModel.editNote(id, updatedNote.text.toString())
+                    updateRV()
+                }
             })
             .setNegativeButton("Cancel", DialogInterface.OnClickListener {
                     dialog, _ -> dialog.cancel()
