@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlinsql.adapters.NoteAdapter
@@ -14,6 +15,7 @@ import com.example.kotlinsql.database.NoteModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var db: DatabaseHandler
+    private lateinit var viewModel: MainActivityViewModel
 
     private lateinit var rvNotes: RecyclerView
     private lateinit var editText: EditText
@@ -24,6 +26,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         db = DatabaseHandler(this)
+        val viewModelFactory = MainActivityViewModelFactory(db)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(MainActivityViewModel::class.java)
 
         editText = findViewById(R.id.tvNewNote)
         submitBtn = findViewById(R.id.btSubmit)
@@ -34,12 +38,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateRV(){
-        rvNotes.adapter = NoteAdapter(this, getItemsList())
+        rvNotes.adapter = NoteAdapter(this, viewModel.getItemsList())
         rvNotes.layoutManager = LinearLayoutManager(this)
-    }
-
-    private fun getItemsList(): ArrayList<NoteModel>{
-        return db.viewNotes()
     }
 
     private fun postNote(){
