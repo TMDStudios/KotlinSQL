@@ -11,6 +11,7 @@ class MainActivityViewModel(private val db: DatabaseHandler): ViewModel() {
     }
 
     fun postNote(noteText: String){
+        // The id is automatically generated
         db.addNote(NoteModel(0, noteText))
     }
 

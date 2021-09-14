@@ -52,6 +52,9 @@ class MainActivity : AppCompatActivity() {
         dialogBuilder
             .setCancelable(false)
             .setPositiveButton("Save", DialogInterface.OnClickListener {
+                // The setPositiveButton method takes in two arguments
+                // More info here: https://developer.android.com/reference/kotlin/android/app/AlertDialog.Builder#setpositivebutton
+                // Use underscores when lambda arguments are not used
                     _, _ ->
                 run {
                     viewModel.editNote(id, updatedNote.text.toString())
