@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         submitBtn.setOnClickListener {
             viewModel.postNote(editText.text.toString())
             editText.text.clear()
+            editText.clearFocus()
             updateRV()
         }
 
