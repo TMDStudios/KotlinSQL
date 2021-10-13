@@ -6,14 +6,15 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlinsql.adapters.NoteAdapter
 import com.example.kotlinsql.database.DatabaseHandler
-import com.example.kotlinsql.database.NoteModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var db: DatabaseHandler
+    lateinit var viewModel: MainActivityViewModel
 
     private lateinit var rvNotes: RecyclerView
     private lateinit var editText: EditText
@@ -24,17 +25,24 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         db = DatabaseHandler(this)
+        val viewModelFactory = MainActivityViewModelFactory(db)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(MainActivityViewModel::class.java)
 
         editText = findViewById(R.id.tvNewNote)
         submitBtn = findViewById(R.id.btSubmit)
-        submitBtn.setOnClickListener { postNote() }
+        submitBtn.setOnClickListener {
+            viewModel.postNote(editText.text.toString())
+            editText.text.clear()
+            editText.clearFocus()
+            updateRV()
+        }
 
         rvNotes = findViewById(R.id.rvNotes)
         updateRV()
     }
 
-    private fun updateRV(){
-        rvNotes.adapter = NoteAdapter(this, getItemsList())
+    fun updateRV(){
+        rvNotes.adapter = NoteAdapter(this, viewModel.getNotesList())
         rvNotes.layoutManager = LinearLayoutManager(this)
     }
 
@@ -65,7 +73,14 @@ class MainActivity : AppCompatActivity() {
         dialogBuilder
             .setCancelable(false)
             .setPositiveButton("Save", DialogInterface.OnClickListener {
-                    _, _ -> editNote(id, updatedNote.text.toString())
+                // The setPositiveButton method takes in two arguments
+                // More info here: https://developer.android.com/reference/kotlin/android/app/AlertDialog.Builder#setpositivebutton
+                // Use underscores when lambda arguments are not used
+                    _, _ ->
+                run {
+                    viewModel.editNote(id, updatedNote.text.toString())
+                    updateRV()
+                }
             })
             .setNegativeButton("Cancel", DialogInterface.OnClickListener {
                     dialog, _ -> dialog.cancel()

@@ -2,19 +2,17 @@ package com.example.kotlinsql.adapters
 
 import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlinsql.MainActivity
-import com.example.kotlinsql.R
 import com.example.kotlinsql.database.NoteModel
-import kotlinx.android.synthetic.main.note_row.view.*
+import com.example.kotlinsql.databinding.NoteRowBinding
 
 class NoteAdapter(
     private val activity: MainActivity,
     private val items: ArrayList<NoteModel>): RecyclerView.Adapter<NoteAdapter.ItemViewHolder>() {
 
-    class ItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+    class ItemViewHolder(val binding: NoteRowBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteAdapter.ItemViewHolder {
         return ItemViewHolder(
@@ -29,7 +27,7 @@ class NoteAdapter(
     override fun onBindViewHolder(holder: NoteAdapter.ItemViewHolder, position: Int) {
         val item = items[position]
 
-        holder.itemView.apply {
+        holder.binding.apply {
             tvNote.text = item.noteText
             if(position%2==0){llNoteHolder.setBackgroundColor(Color.GRAY)}
             ibEditNote.setOnClickListener {
