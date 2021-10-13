@@ -1,6 +1,5 @@
 package com.example.kotlinsql.adapters
 
-import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -12,14 +11,14 @@ import com.example.kotlinsql.database.NoteModel
 import kotlinx.android.synthetic.main.note_row.view.*
 
 class NoteAdapter(
-    private val context: Context,
+    private val activity: MainActivity,
     private val items: ArrayList<NoteModel>): RecyclerView.Adapter<NoteAdapter.ItemViewHolder>() {
 
     class ItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteAdapter.ItemViewHolder {
         return ItemViewHolder(
-            LayoutInflater.from(context).inflate(
+            LayoutInflater.from(parent.context).inflate(
                 R.layout.note_row,
                 parent,
                 false
@@ -34,14 +33,10 @@ class NoteAdapter(
             tvNote.text = item.noteText
             if(position%2==0){llNoteHolder.setBackgroundColor(Color.GRAY)}
             ibEditNote.setOnClickListener {
-                if(context is MainActivity){
-                    (context as MainActivity).raiseDialog(item.id)
-                }
+                activity.raiseDialog(item.id)
             }
             ibDeleteNote.setOnClickListener {
-                if(context is MainActivity){
-                    (context as MainActivity).deleteNote(item.id)
-                }
+                activity.deleteNote(item.id)
             }
         }
     }

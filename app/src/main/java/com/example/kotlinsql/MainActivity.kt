@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         updateRV()
     }
 
-    fun editNote(noteID: Int, noteText: String){
+    private fun editNote(noteID: Int, noteText: String){
         db.updateNote(NoteModel(noteID, noteText))
         updateRV()
     }
