@@ -46,6 +46,26 @@ class MainActivity : AppCompatActivity() {
         rvNotes.layoutManager = LinearLayoutManager(this)
     }
 
+    private fun getItemsList(): ArrayList<NoteModel>{
+        return db.viewNotes()
+    }
+
+    private fun postNote(){
+        db.addNote(NoteModel(0, editText.text.toString()))
+        editText.text.clear()
+        updateRV()
+    }
+
+    private fun editNote(noteID: Int, noteText: String){
+        db.updateNote(NoteModel(noteID, noteText))
+        updateRV()
+    }
+
+    fun deleteNote(noteID: Int){
+        db.deleteNote(NoteModel(noteID, ""))
+        updateRV()
+    }
+
     fun raiseDialog(id: Int){
         val dialogBuilder = AlertDialog.Builder(this)
         val updatedNote = EditText(this)

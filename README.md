@@ -1,5 +1,9 @@
 # KotlinSQL
 
+This is the basic version of the SQLite App (No ViewModel)
+
+*****************************************************************************************************************
+
 This application makes use of Android Studio's built in SQLite database to save notes entered through an EditText 
 
 Every odd numbered note uses a darker background for a cleaner display
