@@ -5,22 +5,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlinsql.MainActivity
-import com.example.kotlinsql.database.NoteModel
+import com.example.kotlinsql.data.Note
+
 import com.example.kotlinsql.databinding.NoteRowBinding
 
 class NoteAdapter(
     private val activity: MainActivity,
-    private val items: ArrayList<NoteModel>): RecyclerView.Adapter<NoteAdapter.ItemViewHolder>() {
+    private val items: List<Note>): RecyclerView.Adapter<NoteAdapter.ItemViewHolder>() {
 
     class ItemViewHolder(val binding: NoteRowBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteAdapter.ItemViewHolder {
         return ItemViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.note_row,
-                parent,
-                false
-            )
+            NoteRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
