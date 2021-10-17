@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlinsql.MainActivity
 import com.example.kotlinsql.data.Note
+
 import com.example.kotlinsql.databinding.NoteRowBinding
 
 class NoteAdapter(
