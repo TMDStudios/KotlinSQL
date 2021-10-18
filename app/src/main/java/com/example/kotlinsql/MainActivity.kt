@@ -7,7 +7,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlinsql.adapters.NoteAdapter
@@ -40,13 +39,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         notes = listOf()
 
         editText = findViewById(R.id.tvNewNote)
         submitBtn = findViewById(R.id.btSubmit)
         submitBtn.setOnClickListener {
-            viewModel.postNote(editText.text.toString())
+            addNote()
             editText.text.clear()
             editText.clearFocus()
             updateRV()
@@ -77,21 +75,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun postNote(){
+    private fun addNote(){
         CoroutineScope(IO).launch {
             repository.addNote(Note(0,editText.text.toString()))
         }
-
-        editText.text.clear()
-        updateRV()
     }
 
     private fun editNote(noteID: Int, noteText: String){
-        updateRV()
+        CoroutineScope(IO).launch {
+            repository.updateNote(Note(noteID,noteText))
+        }
     }
 
     fun deleteNote(noteID: Int){
-        updateRV()
+        CoroutineScope(IO).launch {
+            repository.deleteNote(Note(noteID,""))
+        }
     }
 
     fun raiseDialog(id: Int){
@@ -106,7 +105,7 @@ class MainActivity : AppCompatActivity() {
                 // Use underscores when lambda arguments are not used
                     _, _ ->
                 run {
-                    viewModel.editNote(id, updatedNote.text.toString())
+                    editNote(id, updatedNote.text.toString())
                     updateRV()
                 }
             })

@@ -1,9 +1,6 @@
 package com.example.kotlinsql.data
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface NoteDao {
@@ -13,5 +10,11 @@ interface NoteDao {
 
     @Query("SELECT * FROM NotesTable ORDER BY id ASC")
     fun getNotes(): List<Note>
+
+    @Update
+    suspend fun updateNote(note: Note)
+
+    @Delete
+    suspend fun deleteNote(note: Note)
 
 }
