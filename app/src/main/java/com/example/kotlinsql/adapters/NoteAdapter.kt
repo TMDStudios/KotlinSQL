@@ -11,7 +11,9 @@ import com.example.kotlinsql.databinding.NoteRowBinding
 
 class NoteAdapter(
     private val activity: MainActivity,
-    private val items: List<Note>): RecyclerView.Adapter<NoteAdapter.ItemViewHolder>() {
+    ): RecyclerView.Adapter<NoteAdapter.ItemViewHolder>() {
+
+    private var items = emptyList<Note>()
 
     class ItemViewHolder(val binding: NoteRowBinding): RecyclerView.ViewHolder(binding.root)
 
@@ -31,10 +33,15 @@ class NoteAdapter(
                 activity.raiseDialog(item.id)
             }
             ibDeleteNote.setOnClickListener {
-                activity.deleteNote(item.id)
+                activity.noteViewModel.deleteNote(item.id)
             }
         }
     }
 
     override fun getItemCount() = items.size
+
+    fun update(notes: List<Note>){
+        items = notes
+        notifyDataSetChanged()
+    }
 }
